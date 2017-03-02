@@ -47,11 +47,13 @@ GreenKoopa:has("Name", "Green Koopa")
 ```
 
 We've used two new methods in the above example, `extends` and `has`. `extends` will tell our class to inherit the object you pass to it, and `has` is used to override the properties. 
-That's basically all there is to it. You can easily loop through the children of a base class, too.
+That's basically all there is to it.
+
+You can easily loop through the children of a base class.
 
 ```lua
 -- test.lua
-require "koopa" -- we obviously need to include the base
+require "koopa"
 require "green_koopa" -- don't forget to load the other koopas
 
 print("Found " .. #Koopa.children .. " koopas!")
@@ -60,4 +62,13 @@ for _, k in pairs(Koopa.children) do
   print("Name: " .. k.Name)
   print("Can bounce: " .. tostring(k.CanBounce))
 end
+```
+
+If you don't need or want to, you don't even have to include the koopa base
+
+```lua
+-- test.lua
+require "green_koopa"
+
+print("Green Koopa's name is " .. GreenKoopa.Name)
 ```
