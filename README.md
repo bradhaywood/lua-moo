@@ -18,7 +18,7 @@ require "moo"
 package("Koopa")
 ```
 
-You now I have a metatable called `Koopa`. Though it's not very useful. So, let's add some properties to it.
+You now have a metatable called `Koopa`. Though it's not very useful. So, let's add some properties to it.
 
 ```lua
 require "moo"
