@@ -64,7 +64,7 @@ for _, k in pairs(Koopa.children) do
 end
 ```
 
-If you don't need or want to, you don't even have to include the koopa base
+If you don't need or want direct access to the parent, you don't even have to include the koopa base
 
 ```lua
 -- test.lua
