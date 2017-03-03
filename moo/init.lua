@@ -22,9 +22,8 @@ function package(classname, o)
   _base_0["children"] = {}
   _base_0["extends"] = function(cls, par)
     local metatable = getmetatable(cls)
-    metatable.parent = getmetatable(par)
+    metatable.parent = par--getmetatable(par)
     setmetatable(metatable.__index, par.__base)
-    --return metatable
     metatable.__index = function(cls, name)
       local val = metatable[name]
       if val == nil then

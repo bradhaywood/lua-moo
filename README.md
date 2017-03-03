@@ -26,6 +26,10 @@ require "moo"
 package("Koopa",
   { Name = "Koopa", CanBounce = false, ReverseAtEnd = false })
   
+function Koopa:GetMyName()
+  return self.Name or "I have no name"
+end
+  
 ```
 
 Now our Koopa class can assign a name, return if it can bounce or not, and tell us if it reverse when it reaches a cliff. 
@@ -38,7 +42,7 @@ while allowing you to override them, giving each Koopa a unique set of propertie
 require "moo"
 require "koopa"
 
-package("GreenKoopa"):extends(Koopa()) -- Koopa() will return the Koopa metatable
+package("GreenKoopa"):extends(Koopa)
 
 -- We're happy with the defaults of the Koopa class, but 
 -- obviously want to change the name!
@@ -58,9 +62,9 @@ require "green_koopa" -- don't forget to load the other koopas
 
 print("Found " .. #Koopa.children .. " koopas!")
 
-for _, k in pairs(Koopa.children) do
-  print("Name: " .. k.Name)
-  print("Can bounce: " .. tostring(k.CanBounce))
+for _, v in pairs(Koopa.children) do
+  print("Name: " .. v:GetMyName()) -- GetMyName() was defined in the base class (Koopa)
+  print("Can bounce: " .. tostring(v.CanBounce))
 end
 ```
 
@@ -71,6 +75,14 @@ If you don't need or want direct access to the parent, you don't even have to in
 require "green_koopa"
 
 print("Green Koopa's name is " .. GreenKoopa.Name)
+```
+
+Last thing to note - you can return an **instance** of an object by calling it as a function.
+
+```lua
+require "green_koopa"
+
+local gkoopa = GreenKoopa()
 ```
 
 ## LICENSE
