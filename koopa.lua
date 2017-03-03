@@ -1,6 +1,6 @@
 require "moo"
 
-package("Koopa", {
+class("Koopa", {
     CanBounce = false,
     ReverseAtEnd = false
 })

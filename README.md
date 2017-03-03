@@ -9,13 +9,13 @@ You'll find examples in the main directory (ie: All the Koopa stuff). I'll give 
 
 ## SYNOPSIS
 
-To create a class (or package as moo refers to them as) just use the `package` function
+To create a class just use the `class` function
 
 ```lua
 -- koopa.lua
 require "moo"
 
-package("Koopa")
+class("Koopa")
 ```
 
 You now have a metatable called `Koopa`. Though it's not very useful. So, let's add some properties to it.
@@ -23,7 +23,7 @@ You now have a metatable called `Koopa`. Though it's not very useful. So, let's 
 ```lua
 require "moo"
 
-package("Koopa",
+class("Koopa",
   { Name = "Koopa", CanBounce = false, ReverseAtEnd = false })
   
 function Koopa:GetMyName()
@@ -42,7 +42,7 @@ while allowing you to override them, giving each Koopa a unique set of propertie
 require "moo"
 require "koopa"
 
-package("GreenKoopa"):extends(Koopa)
+class("GreenKoopa"):extends(Koopa)
 
 -- We're happy with the defaults of the Koopa class, but 
 -- obviously want to change the name!

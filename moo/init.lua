@@ -1,4 +1,4 @@
-function package(classname, o)
+function class(classname, o)
   local metaclass
   local _base_0 = {}
 
@@ -22,7 +22,7 @@ function package(classname, o)
   _base_0["children"] = {}
   _base_0["extends"] = function(cls, par)
     local metatable = getmetatable(cls)
-    metatable.parent = par--getmetatable(par)
+    metatable.parent = par
     setmetatable(metatable.__index, par.__base)
     metatable.__index = function(cls, name)
       local val = metatable[name]

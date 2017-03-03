@@ -1,7 +1,7 @@
 require "moo"
 require "koopa"
 
-package("ParaKoopa"):extends(Koopa)
+class("ParaKoopa"):extends(Koopa)
 
 ParaKoopa:has("Name", "ParaKoopa")
 ParaKoopa:has("CanBounce", true)
