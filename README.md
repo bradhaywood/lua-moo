@@ -1,21 +1,19 @@
 # moo.lua
-### The little lua class builder library
+
+The little lua class builder library
 
 ## INTRODUCTION
-Moonscript seemed like a cool idea, but I hated the syntax. I'm doing Lua because I enjoy Lua - I'm not interested in learning another language. So I attempted to 
-take the garbage Lua that Moonscript generates and move it into a library. That way, you can still write Lua and not have to worry about doing the 
-metatable dance yourself.
-You'll find examples in the main directory (ie: All the Koopa stuff). I'll give a short synopsis to try and explain how it works.
+Moo.lua is just a small library that performs all the dirty work of building classes (ie: metatables) for you. It can also handle some lightweight instancing and inheritance.
 
-## SYNOPSIS
+## USAGE
 
-To create a class just use the `class` function
+To create a class just use `class:new()`
 
 ```lua
 -- koopa.lua
 require "moo"
 
-class("Koopa")
+Koopa = class:new()
 ```
 
 You now have a metatable called `Koopa`. Though it's not very useful. So, let's add some properties to it.
@@ -23,16 +21,22 @@ You now have a metatable called `Koopa`. Though it's not very useful. So, let's 
 ```lua
 require "moo"
 
-class("Koopa",
-  { Name = "Koopa", CanBounce = false, ReverseAtEnd = false })
-  
+Koopa = class:new()
+
+Koopa.Name = "Koopa"
+Koopa.CanBounce = false
+Koopa.ReverseAtEnd = false
+
 function Koopa:GetMyName()
   return self.Name or "I have no name"
 end
   
 ```
 
-Now our Koopa class can assign a name, return if it can bounce or not, and tell us if it reverse when it reaches a cliff. 
+Now our Koopa class can assign a name, return if it can bounce or not, and tell us if it reverse when it reaches a cliff.
+
+## INHERITANCE
+
 You can use inheritance to create new Koopa classes that inherit the base (parent) Koopa class. This will give your new Koopas the default properties of Koopa 
 while allowing you to override them, giving each Koopa a unique set of properties.
 
@@ -42,16 +46,11 @@ while allowing you to override them, giving each Koopa a unique set of propertie
 require "moo"
 require "koopa"
 
-class("GreenKoopa"):extends(Koopa)
+GreenKoopa = class:extends(Koopa)
 
--- We're happy with the defaults of the Koopa class, but 
--- obviously want to change the name!
-
-GreenKoopa:has("Name", "Green Koopa")
+-- We're happy with the other defaults, but want to change the name
+GreenKoopa.Name = "Green Koopa"
 ```
-
-We've used two new methods in the above example, `extends` and `has`. `extends` will tell our class to inherit the object you pass to it, and `has` is used to override the properties. 
-That's basically all there is to it.
 
 You can easily loop through the children of a base class.
 
@@ -77,15 +76,39 @@ require "green_koopa"
 print("Green Koopa's name is " .. GreenKoopa.Name)
 ```
 
-Last thing to note - you can return an **instance** of an object by calling it as a function.
+## INSTANCING
+You can return an **instance** of an object by calling it as a function. Anything you perform on the instance 
+will not affect the main table it was instanced from
 
 ```lua
 require "green_koopa"
 
-local gkoopa = GreenKoopa()
+local greenKoopa = GreenKoopa()
+greenKoopa.Name = "Instanced Green Koopa"
+
+print(greenKoopa.Name) -- outputs: Instanced Green Koopa
+print(GreenKoopa.Name) -- outputs: Green Koopa
 ```
 
-## LICENSE
+Whenever you initialise an instance you can automatically get it to run a special method called `Initialize`.
+
+```
+-- green_koopa.lua
+
+GreenKoopa = class:extends(Koopa)
+
+function GreenKoopa:Initialize()
+  print("I have been summoned!")
+end
+
+-- test.lua
+
+local koopa = GreenKoopa() -- outputs: I have been summoned!
+```
+
+The `Initialize` method does support arguments, so you can pass stuff across if you want. Being a method, `self` is also available.
+
+# LICENSE
 
 Copyright 2017 Brad Haywood
 

@@ -11,3 +11,14 @@ for k, v in pairs(Koopa.children) do
   print("Can Bounce: " .. tostring(v.CanBounce))
   print("--")
 end
+
+-- Instance test
+local parakoopa = ParaKoopa()
+print("ParaKoopa reverse at end: " .. tostring(parakoopa.ReverseAtEnd))
+
+-- update the instance
+parakoopa.ReverseAtEnd = true
+print(tostring(parakoopa.ReverseAtEnd))
+
+-- make sure the original didn't get affected
+print(tostring(ParaKoopa.ReverseAtEnd))

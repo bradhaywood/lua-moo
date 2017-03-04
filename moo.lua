@@ -1,62 +1,65 @@
-function class(classname, o)
-  local metaclass
-  local _base_0 = {}
+class = {}
 
+local function new(self, o)
+  local metaclass = {}
+  local base = {
+    children = {},
+    parent = {}
+  }
   if (o ~= nil) then
     for k, v in pairs(o) do
-      _base_0[k] = v
-      _base_0["Set" .. k] = function(cls, n)
-        cls[k] = n
-      end
-      _base_0["Get" .. k] = function(cls) return cls[k] end
-      _base_0["defn"] = function(cls, name, fn)
-        local metatable = getmetatable(cls)
-        metatable.__index[name] = fn
+      base[k] = v
+    end
+  end
+  
+  -- this is freaking disgusting
+  local getName = function()
+    for k, v in pairs(_G) do
+      if (v == metaclass) then
+        return k
       end
     end
   end
-  _base_0["has"] = function(cls, n, v)
-    local metatable = getmetatable(cls)
-    metatable[n] = v
-  end
-  _base_0["children"] = {}
-  _base_0["extends"] = function(cls, par)
-    local metatable = getmetatable(cls)
-    metatable.parent = par
-    setmetatable(metatable.__index, par.__base)
-    metatable.__index = function(cls, name)
-      local val = metatable[name]
-      if val == nil then
-        local parent = par
-        if parent then
-          return parent[name]
-        end
-      else
-        return val
-      end
-    end
-    table.insert(metatable.parent.children, cls)
-    return metatable
-  end
-
+  
   local args = {
-    __init = function() end,
-    __base = _base_0,
-    __name = classname
+    Initialize = function() end,
+    __base = base,
+    __name = getName()
   }
-
-  _base_0.__index = _base_0
+  base.__index = base
+  
   metaclass = setmetatable(args, {
-    __index = _base_0,
+    __index = base,
     __call = function(cls, ...)
-      local _self_0 = setmetatable({}, _base_0)
-      cls.__init(_self_0, ...)
-      return _self_0
+      local me
+      if (cls.parent ~= nil) then
+        me = setmetatable(cls.parent, cls)
+      else
+        me = setmetatable({}, cls)
+      end
+      cls.Initialize(me, ...)
+      return me
     end
   })
-  _base_0.__class = metaclass
+  base.__class = metaclass
   local self = metaclass
-  _G[classname] = metaclass
-
   return metaclass
 end
+
+function class:new(o)
+  return new(self, o)
+end
+
+function class:extends(par)
+  local cls = class:new()
+  cls.parent = par
+  for k, v in pairs(par) do
+    cls[k] = v
+  end
+  cls.__init = function(self, ...)
+    return cls.parent.Initialize(self, ...)
+  end
+  table.insert(cls.parent.children, cls)
+  return cls
+end
+
