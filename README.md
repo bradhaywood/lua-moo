@@ -92,7 +92,7 @@ print(GreenKoopa.Name) -- outputs: Green Koopa
 
 Whenever you initialise an instance you can automatically get it to run a special method called `Initialize`.
 
-```
+```lua
 -- green_koopa.lua
 
 GreenKoopa = class:extends(Koopa)
