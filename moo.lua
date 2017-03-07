@@ -30,14 +30,14 @@ local function new(self, o)
   
   metaclass = setmetatable(args, {
     __index = base,
-    __call = function(cls, ...)
-      local me
-      if (cls.parent ~= nil) then
-        me = setmetatable(cls.parent, cls)
-      else
-        me = setmetatable({}, cls)
+    __call = function(cls, ca)
+      local me = {}
+      for k, v in pairs(ca) do
+        me[k] = v
       end
-      cls.Initialize(me, ...)
+      setmetatable(me, cls)
+      cls.__index = cls
+      cls.Initialize(me, ca)
       return me
     end
   })

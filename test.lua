@@ -13,7 +13,7 @@ for k, v in pairs(Koopa.children) do
 end
 
 -- Instance test
-local parakoopa = ParaKoopa()
+local parakoopa = ParaKoopa({ Name = "ParaFuckenKoopa"})
 print("ParaKoopa reverse at end: " .. tostring(parakoopa.ReverseAtEnd))
 
 -- update the instance
@@ -22,3 +22,6 @@ print(tostring(parakoopa.ReverseAtEnd))
 
 -- make sure the original didn't get affected
 print(tostring(ParaKoopa.ReverseAtEnd))
+
+-- make sure we got the new name
+print(parakoopa.Name)
