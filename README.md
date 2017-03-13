@@ -108,6 +108,42 @@ local koopa = GreenKoopa() -- outputs: I have been summoned!
 
 The `Initialize` method does support arguments, so you can pass stuff across if you want. Being a method, `self` is also available.
 
+## INTERFACES
+
+This is a pretty light version of interfaces, but it works for the most part. Interfaces are useful for type checking properties created by your classes, and this implemention works on classes that are inheriting also.
+
+```lua
+-- koopa.lua
+
+-- create the interface (base properties our class will use)
+KoopaTemplate = interface({
+	CanBounce = Type.bool,
+	ReverseAtEnd = Type.bool,
+	Name = Type.string
+})
+
+Koopa = class:implements(KoopaTemplate, {
+	CanBounce = false,
+	ReverseAtEnd = false,
+	Name = "Generic Koopa"
+})
+```
+
+If the `Koopa` class is missing any of the properties defined in the interface, then lua will project an error. If any of the types don't match, it will also error.
+To use in inheritance you don't need to do anything abnormal. Just make sure you set the properties in the table rather than using indexing.
+
+```lua
+-- red_koopa.lua
+
+RedKoopa = class:extends(Koopa, {
+	ReverseAtEnd = true,
+	Name = "Red Koopa",
+	CanBounce = false
+})
+```
+
+The above example is the same as doing `RedKoopa.ReverseAtEnd = true`, etc. Except it's quicker to type, and allows the interface to work its magic.
+
 # LICENSE
 
 Copyright 2017 Brad Haywood

@@ -1,7 +1,8 @@
 require "moo"
 require "koopa"
 
-RedKoopa = class:extends(Koopa)
-
-RedKoopa.ReverseAtEnd = true
-RedKoopa.Name = "Red Koopa"
+RedKoopa = class:extends(Koopa, {
+	ReverseAtEnd = true,
+	Name = "Red Koopa",
+	CanBounce = false
+})
