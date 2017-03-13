@@ -1,3 +1,5 @@
+--[[ CLASS SYSTEM ]]--
+
 class = {}
 
 local function new(self, o)
@@ -30,14 +32,11 @@ local function new(self, o)
   
   metaclass = setmetatable(args, {
     __index = base,
-    __call = function(cls, ca)
+    __call = function(cls, ...)
       local me = {}
-      for k, v in pairs(ca) do
-        me[k] = v
-      end
       setmetatable(me, cls)
       cls.__index = cls
-      cls.Initialize(me, ca)
+      cls.Initialize(me, ...)
       return me
     end
   })
@@ -63,3 +62,33 @@ function class:extends(par)
   return cls
 end
 
+--[[ UTIL ]]--
+
+function join(t, delimiter)
+  local len = #t
+  if len == 0 then
+    return ""
+  end
+  local string = t[1]
+  for i = 2, len do
+    string = string .. delimiter .. t[i]
+  end
+  return string
+end
+
+function split(str, sep)
+  if sep == nil then
+    sep = "%s"
+  end
+  local t={}
+  local i=1
+  for str in string.gmatch(str, "([^"..sep.."]+)") do
+    t[i] = str
+    i = i + 1
+  end
+  return t
+end
+
+function string:split(sep)
+  return split(self, sep)
+end
